@@ -8,7 +8,7 @@ public class Main {
         System.out.println("Please enter text for encryption: ");
     }
     void askForShift(){
-        System.out.println("Please enter shifting number for encryption: ");
+        System.out.println("Please enter shifting number for encryption (1-29) : ");
     }
 
     int[] stringToIntConverter(String text) {
@@ -36,6 +36,22 @@ public class Main {
         return encryptedMessage;
     }
 
+    String intToDecryption(int shift, int[] convertedString) {
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ";
+        String decryptedMessage = "";
+        for (int i = 0; i < convertedString.length; i++) {
+            if (convertedString[i] == 0)  {
+                decryptedMessage += " ";
+            }
+            else if ((convertedString[i] - shift - 1) < 0) {
+                decryptedMessage += alphabet.charAt((convertedString[i] - shift) + alphabet.length() - 1);
+            }
+            else {
+                decryptedMessage += alphabet.charAt(((convertedString[i] - shift ) - 1 ) % 29 ) ;
+            }
+        }
+        return decryptedMessage;
+    }
 
     public static void main(String[] args) {
         Main method = new Main();
@@ -49,9 +65,14 @@ public class Main {
         method.askForShift();
         int shift = in.nextInt();
 
-
         String postEncryptionMessage = method.intToEncryption(shift, method.stringToIntConverter(textToBeEncrypted));
         System.out.println("Your encrypted message is: \n" + postEncryptionMessage);
+
+        // Decryption test below
+        String postDecryptionMessage = method.intToDecryption(shift, method.stringToIntConverter(postEncryptionMessage));
+
+        System.out.println("Test of post encryption message in the decryption method: ");
+        System.out.println(postDecryptionMessage);
 
     }
 }
